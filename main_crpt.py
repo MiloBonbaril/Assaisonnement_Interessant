@@ -5,11 +5,14 @@ from sklearn import preprocessing, model_selection, svm
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 from matplotlib import style
-
+import binance
 
 style.use("ggplot")
 
 df = quandl.get(dataset="WIKI/GOOGL", api_key='gMJe82YcNRRrBaHBumbW')
+
+client = binance.client.Client()
+klinesT = client.get_historical_klines('BTCUSDT', binance.client.Client.KLINE_INTERVAL_5MINUTE, '1 day ago UTC')
 
 df = df[['Adj. Open', 'Adj. High', 'Adj. Low', 'Adj. Close', 'Adj. Volume']]
 df['HL_PCT'] = (df['Adj. High'] - df['Adj. Close']) / df['Adj. Low'] * 100.0

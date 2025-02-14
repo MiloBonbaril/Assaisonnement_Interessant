@@ -1,0 +1,1 @@
+CONVERSATION_MEMORY_PATH = "./conversation_memory.json"

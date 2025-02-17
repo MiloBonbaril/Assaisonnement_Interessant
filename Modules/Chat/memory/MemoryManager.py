@@ -29,7 +29,7 @@ class MemoryManager:
             elif message["type"] == "AIMessage":
                 self.memory.append(AIMessage(message["content"]))
 
-    def add_message(self, message):
+    def add_message_to_memory(self, message):
         if isinstance(message, list):
             print("Message is a list")
             for m in message:
@@ -73,5 +73,5 @@ if __name__ == "__main__":
         SystemMessage("You are Lilly, you act like a young woman. You will assist the user in their daily tasks, while keeping a conversation like a real human. Your answer should be short, just like a SMS."),
         HumanMessage(f"Hey Lilly, {test_question}"),
     ]
-    memory.add_message(messages)
+    memory.add_message_to_memory(messages)
     print(memory.memory)

@@ -21,12 +21,17 @@ class ChatBrain:
         self.full = ""
 
     def stream(self, messages):
+        print("--------------------//DEBUG//--------------------")
+        print(messages)
+        print("--------------------//DEBUG//--------------------")
         for chunk in self.llm.stream(messages):
             self.full += chunk.content
             yield chunk
 
     def get_full(self):
-        return self.full
+        return_message = self.full
+        self.reset()
+        return return_message
 
     def reset(self):
         self.full = ""

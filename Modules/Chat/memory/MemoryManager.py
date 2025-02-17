@@ -43,15 +43,15 @@ class MemoryManager:
                     print("Message is an AIMessage")
                     self.memory.append(m)
         else:
-            if isinstance(m, SystemMessage):
+            if isinstance(message, SystemMessage):
                 print("Message is a SystemMessage")
-                self.memory.append(m)
-            elif isinstance(m, HumanMessage):
+                self.memory.append(message)
+            elif isinstance(message, HumanMessage):
                 print("Message is a HumanMessage")
-                self.memory.append(m)
-            elif isinstance(m, AIMessage):
+                self.memory.append(message)
+            elif isinstance(message, AIMessage):
                 print("Message is an AIMessage")
-                self.memory.append(m)
+                self.memory.append(message)
         self.save()
 
     def save(self):
@@ -66,12 +66,55 @@ class MemoryManager:
         with open(self.path, "w") as file:
             json.dump(save_data, file, indent=4)
 
+    def send_message_without_adding_in_memory(self, message):
+        messages = []
+        for m in self.memory:
+            messages.append(m)
+        if isinstance(message, list):
+            for m in message:
+                messages.append(m)
+        else:
+            messages.append(message)
+        for chunk in self.brain.stream(messages):
+            print(chunk.content, end="")
+        print("\n\n--------------------//FULL TEXT//--------------------")
+        full_message = self.brain.get_full()
+        print(full_message)
+        return full_message
+
+    def send_message_with_memory(self, message):
+        self.add_message_to_memory(message)
+        full_message = self.send_message_without_adding_in_memory(message)
+        self.add_message_to_memory(AIMessage(full_message))
+        return full_message
+
+    def reset_memory(self):
+        self.memory = []
+        self.save()
+
 if __name__ == "__main__":
     memory = MemoryManager()
+    # resetting the memory to test the memory
+    memory.reset_memory()
     test_question = "how are you?"
     messages = [
         SystemMessage("You are Lilly, you act like a young woman. You will assist the user in their daily tasks, while keeping a conversation like a real human. Your answer should be short, just like a SMS."),
-        HumanMessage(f"Hey Lilly, {test_question}"),
     ]
     memory.add_message_to_memory(messages)
+    print(memory.memory)
+
+    # sending a message without memory with my name so we can test the memory
+    message = HumanMessage("Hey Lilly! my name is Milo.")
+    memory.send_message_without_adding_in_memory(message)
+    print(memory.memory)
+    message = HumanMessage("What's my name?")
+    memory.send_message_without_adding_in_memory(message)
+    print(memory.memory)
+
+    # sending a message with memory
+    message = HumanMessage("Hey Lilly! my name is Milo.")
+    memory.send_message_with_memory(message)
+    print(memory.memory)
+    message = HumanMessage("What's my name?")
+    memory.send_message_with_memory(message)
     print(memory.memory)

@@ -68,9 +68,10 @@ class MemoryManager:
 
 if __name__ == "__main__":
     memory = MemoryManager()
+    test_question = "how are you?"
     messages = [
         SystemMessage("You are Lilly, you act like a young woman. You will assist the user in their daily tasks, while keeping a conversation like a real human. Your answer should be short, just like a SMS."),
-        HumanMessage("Hey Lilly, how are you?"),
+        HumanMessage(f"Hey Lilly, {test_question}"),
     ]
-    #memory.add_message(messages)
+    memory.add_message(messages)
     print(memory.memory)

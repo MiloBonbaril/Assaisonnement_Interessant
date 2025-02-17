@@ -1,3 +1,8 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
+
+import config
 from langchain_ollama import ChatOllama
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 import sys
@@ -5,7 +10,7 @@ import sys
 class ChatBrain:
     def __init__(self):
         self.llm = ChatOllama(
-            model = "mistral",
+            model = config.MODEL_NAME,
             temperature = 0.6,
             top_k=35,
             top_p=0.92,

@@ -66,15 +66,16 @@ class MemoryManager:
         with open(self.path, "w") as file:
             json.dump(save_data, file, indent=4)
 
-    def send_message_without_adding_in_memory(self, message):
+    def send_message_without_adding_in_memory(self, message=None):
         messages = []
         for m in self.memory:
             messages.append(m)
-        if isinstance(message, list):
-            for m in message:
-                messages.append(m)
-        else:
-            messages.append(message)
+        if message is not None:
+            if isinstance(message, list):
+                for m in message:
+                    messages.append(m)
+            else:
+                messages.append(message)
         for chunk in self.brain.stream(messages):
             print(chunk.content, end="")
         print("\n\n--------------------//FULL TEXT//--------------------")
@@ -84,7 +85,7 @@ class MemoryManager:
 
     def send_message_with_memory(self, message):
         self.add_message_to_memory(message)
-        full_message = self.send_message_without_adding_in_memory(message)
+        full_message = self.send_message_without_adding_in_memory()
         self.add_message_to_memory(AIMessage(full_message))
         return full_message
 

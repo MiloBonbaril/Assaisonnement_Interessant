@@ -6,6 +6,15 @@ from Modules.Chat.brain.ChatBrain import ChatBrain
 import config
 import json
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
+import gettext
+
+# Select the language you need
+lang = 'fr'  # For Spanish, for example
+
+# Set up the translation. 'messages' is the domain name, and 'locale' is the directory
+translation = gettext.translation('prompts', localedir='locale', languages=[lang])
+translation.install()
+_ = translation.gettext  # Alias for easier usage
 
 class MemoryManager:
     def __init__(self):
@@ -21,7 +30,7 @@ class MemoryManager:
 
     def init_memory(self):
         messages = [
-            SystemMessage("You are Lilly, you act like a young woman. You will assist the user in their daily tasks, while keeping a conversation like a real human. Your answer should be short, just like a SMS.")
+            SystemMessage(_("You are Lilly, you act like a young woman. You will assist the user in their daily tasks, while keeping a conversation like a real human. Your answer should be short, just like a SMS."))
         ]
         if config.DEBUG:
             print("Memory file does not exist. Creating a new one...")
@@ -161,8 +170,8 @@ class MemoryManager:
         # take all the memory and summarize it with the AI using a complex system prompt
         print("Summarizing memory...")
         prompt = self.memory + [
-            SystemMessage("You are Lilly, you act like a young woman. Your goal now is to summarize the conversation you had with the user, just like you tell your future self what you did and what you tell to the user. You should keep the conversation short and to the point, while keeping as much as possible personnal information about yourself and the user. AND of course KEEP major events!"),
-            HumanMessage("Can you summarize the conversation we had?"),
+            SystemMessage(_("You are Lilly, you act like a young woman. Your goal now is to summarize the conversation you had with the user, just like you tell your future self what you did and what you tell to the user. You should keep the conversation short and to the point, while keeping as much as possible personnal information about yourself and the user. AND of course KEEP major events!")),
+            HumanMessage(_("Can you summarize the conversation we had?")),
         ]
         summary = self.send_message_without_adding_in_memory(prompt, include_memory=False)
         # ask the user if the summary is good
@@ -175,9 +184,9 @@ class MemoryManager:
             print("Ok, I will reset the memory.")
             self.soft_reset_memory()
             messages = [
-                SystemMessage("The conversation was summarized by the AI and the user confirmed it was good. The following message is the summary:"),
+                SystemMessage(_("The conversation was summarized by the AI and the user confirmed it was good. The following message is the summary of the conversation.")),
                 AIMessage(summary),
-                SystemMessage("You can now act normal. You are Lilly, you act like a young woman. You will assist the user in their daily tasks, while keeping a conversation like a real human. Your answer should be short, just like a SMS.")
+                SystemMessage(_("You can now act normal. You are Lilly, you act like a young woman. You will assist the user in their daily tasks, while keeping a conversation like a real human. Your answer should be short, just like a SMS."))
             ]
             self.add_message_to_memory(messages)
         else:

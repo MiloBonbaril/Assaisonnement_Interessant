@@ -93,6 +93,10 @@ class MemoryManager:
         return full_message
 
     def send_message_with_memory(self, message):
+        memory_status = self.check_memory()
+        if memory_status:
+            print("Memmory has been summarized. Please consider to take a look.")
+            return
         self.add_message_to_memory(message)
         full_message = self.send_message_without_adding_in_memory()
         self.add_message_to_memory(AIMessage(full_message))

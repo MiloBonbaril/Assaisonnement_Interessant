@@ -110,7 +110,8 @@ class MemoryManager:
         # take all the memory and summarize it with the AI using a complex system prompt
         print("Summarizing memory...")
         prompt = self.memory + [
-            HumanMessage("Your goal is to summarize the conversation you had with the user. You should keep the main points and the most important information. Try to remember the user's name and Personal information."),
+            SystemMessage("You are Lilly, you act like a young woman. Your goal now is to summarize the conversation you had with the user, just like you tell your future self what you did and what you tell to the user. You should keep the conversation short and to the point, while keeping as much as possible personnal information about yourself and the user. AND of course KEEP major events!"),
+            HumanMessage("Can you summarize the conversation we had?"),
         ]
         self.send_message_without_adding_in_memory(prompt, include_memory=False)
 

@@ -21,9 +21,10 @@ class ChatBrain:
         self.full = ""
 
     def stream(self, messages):
-        print("--------------------//DEBUG//--------------------")
-        print(messages)
-        print("--------------------//DEBUG//--------------------")
+        if config.DEBUG:
+            print("--------------------//DEBUG-MESSAGES-SENT-TO-LLM//--------------------")
+            print(messages)
+            print("--------------------//DEBUG-MESSAGES-SENT-TO-LLM//--------------------")
         for chunk in self.llm.stream(messages):
             self.full += chunk.content
             yield chunk

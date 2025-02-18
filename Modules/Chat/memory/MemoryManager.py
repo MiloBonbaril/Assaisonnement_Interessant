@@ -23,11 +23,14 @@ class MemoryManager:
         messages = [
             SystemMessage("You are Lilly, you act like a young woman. You will assist the user in their daily tasks, while keeping a conversation like a real human. Your answer should be short, just like a SMS.")
         ]
+        if config.DEBUG:
+            print("Memory file does not exist. Creating a new one...")
         self.add_message_to_memory(messages)
 
     def load(self):
         with open(self.path, "r") as file:
-            print("Loading memory...")
+            if config.DEBUG:
+                print("Loading memory...")
             load_data = json.load(file)
         for message in load_data:
             if message["type"] == "SystemMessage":
@@ -39,26 +42,33 @@ class MemoryManager:
 
     def add_message_to_memory(self, message):
         if isinstance(message, list):
-            print("Message is a list")
+            if config.DEBUG:
+                print("Message is a list")
             for m in message:
                 if isinstance(m, SystemMessage):
-                    print("Message is a SystemMessage")
+                    if config.DEBUG:
+                        print("Message is a SystemMessage")
                     self.memory.append(m)
                 elif isinstance(m, HumanMessage):
-                    print("Message is a HumanMessage")
+                    if config.DEBUG:
+                        print("Message is a HumanMessage")
                     self.memory.append(m)
                 elif isinstance(m, AIMessage):
-                    print("Message is an AIMessage")
+                    if config.DEBUG:
+                        print("Message is an AIMessage")
                     self.memory.append(m)
         else:
             if isinstance(message, SystemMessage):
-                print("Message is a SystemMessage")
+                if config.DEBUG:
+                    print("Message is a SystemMessage")
                 self.memory.append(message)
             elif isinstance(message, HumanMessage):
-                print("Message is a HumanMessage")
+                if config.DEBUG:
+                    print("Message is a HumanMessage")
                 self.memory.append(message)
             elif isinstance(message, AIMessage):
-                print("Message is an AIMessage")
+                if config.DEBUG:
+                    print("Message is an AIMessage")
                 self.memory.append(message)
         self.save()
 
@@ -71,6 +81,8 @@ class MemoryManager:
                 save_data.append({"type": "HumanMessage", "content": message.content})
             elif isinstance(message, AIMessage):
                 save_data.append({"type": "AIMessage", "content": message.content})
+        if config.DEBUG:
+            print("Saving memory...")
         with open(self.path, "w") as file:
             json.dump(save_data, file, indent=4)
 
@@ -86,10 +98,14 @@ class MemoryManager:
             else:
                 messages.append(message)
         for chunk in self.brain.stream(messages):
-            print(chunk.content, end="")
-        print("\n\n--------------------//FULL TEXT//--------------------")
-        full_message = self.brain.get_full()
-        print(full_message)
+            if config.DEBUG:
+                print(chunk.content, end="")
+            else:
+                continue
+        if config.DEBUG:
+            print("\n\n--------------------//FULL TEXT//--------------------")
+            full_message = self.brain.get_full()
+            print(full_message)
         return full_message
 
     def send_message_with_memory(self, message):
@@ -111,6 +127,8 @@ class MemoryManager:
     def soft_reset_memory(self):
         # save the memory in a file inside 'data' folder, following the id and reset the memory
         self.memo_id = self.get_memory_id()
+        if config.DEBUG:
+            print(f"Saving memory in data/conv_{self.memo_id}.json")
         with open(f"data/conv_{self.memo_id}.json", "w") as file:
             save_data = []
             for message in self.memory:

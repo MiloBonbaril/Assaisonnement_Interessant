@@ -1,5 +1,6 @@
 from Modules.Chat.memory.MemoryManager import MemoryManager
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
+from datetime import datetime
 
 memory_manager = MemoryManager()
 
@@ -19,6 +20,11 @@ while True:
         break
 
     user_input = HumanMessage(user_input)
+    # adding a system message right before the user input to tell the date and hour of the conversation
+    current_date = datetime.now()
+    system_message = SystemMessage(f"Today is {current_date.strftime('%d/%m/%Y')} and the time is {current_date.strftime('%H:%M:%S')}")
+    # Send the system message
+    memory_manager.send_message_with_memory(system_message)
     # Add the user input to the memory
     final_message = memory_manager.send_message_with_memory(user_input)
     # Print the response

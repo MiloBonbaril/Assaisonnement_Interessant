@@ -16,8 +16,14 @@ class MemoryManager:
             self.load()
         else:
             self.memory = []
-
+            self.init_memory()
         self.memo_id = 0
+
+    def init_memory(self):
+        messages = [
+            SystemMessage("You are Lilly, you act like a young woman. You will assist the user in their daily tasks, while keeping a conversation like a real human. Your answer should be short, just like a SMS.")
+        ]
+        self.add_message_to_memory(messages)
 
     def load(self):
         with open(self.path, "r") as file:
@@ -163,6 +169,7 @@ class MemoryManager:
 
 if __name__ == "__main__":
     memory = MemoryManager()
+    print("Memory:", memory.memory)
     """ 
     # resetting the memory to test the memory
     memory.reset_memory()
@@ -188,4 +195,4 @@ if __name__ == "__main__":
     message = HumanMessage("What's my name?")
     memory.send_message_with_memory(message)
     print(memory.memory) """
-    print(memory.check_memory(force_summarize=True))
+    #print(memory.check_memory(force_summarize=True))

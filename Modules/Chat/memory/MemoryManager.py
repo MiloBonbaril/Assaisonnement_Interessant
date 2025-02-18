@@ -66,10 +66,11 @@ class MemoryManager:
         with open(self.path, "w") as file:
             json.dump(save_data, file, indent=4)
 
-    def send_message_without_adding_in_memory(self, message=None):
+    def send_message_without_adding_in_memory(self, message=None, include_memory=True):
         messages = []
-        for m in self.memory:
-            messages.append(m)
+        if include_memory:
+            for m in self.memory:
+                messages.append(m)
         if message is not None:
             if isinstance(message, list):
                 for m in message:
@@ -93,8 +94,35 @@ class MemoryManager:
         self.memory = []
         self.save()
 
+    def count_token_in_memory(self):
+        count = 0
+        for message in self.memory:
+            count += len(message.content.split())
+        return count
+
+    def verify_memory_length(self):
+        print("Memory length:", self.count_token_in_memory())
+        if self.count_token_in_memory() > config.MAX_TOKEN_LENGTH:
+            return True
+        return False
+
+    def summarize_memory(self):
+        # take all the memory and summarize it with the AI using a complex system prompt
+        print("Summarizing memory...")
+        prompt = self.memory + [
+            HumanMessage("Your goal is to summarize the conversation you had with the user. You should keep the main points and the most important information. Try to remember the user's name and Personal information."),
+        ]
+        self.send_message_without_adding_in_memory(prompt, include_memory=False)
+
+    def check_memory(self, force_summarize=False):
+        if self.verify_memory_length() or force_summarize:
+            self.summarize_memory()
+            return True
+        return False
+
 if __name__ == "__main__":
     memory = MemoryManager()
+    """ 
     # resetting the memory to test the memory
     memory.reset_memory()
     test_question = "how are you?"
@@ -118,4 +146,5 @@ if __name__ == "__main__":
     print(memory.memory)
     message = HumanMessage("What's my name?")
     memory.send_message_with_memory(message)
-    print(memory.memory)
+    print(memory.memory) """
+    print(memory.check_memory(force_summarize=True))

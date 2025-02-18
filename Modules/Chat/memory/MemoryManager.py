@@ -167,9 +167,21 @@ class MemoryManager:
             return True
         return False
 
+    def __str__(self):
+        # return the memory in a string format, and listed properly
+        string = ""
+        for message in self.memory:
+            if isinstance(message, SystemMessage):
+                string += f"System: {message.content}\n"
+            elif isinstance(message, HumanMessage):
+                string += f"Human: {message.content}\n"
+            elif isinstance(message, AIMessage):
+                string += f"AI: {message.content}\n"
+        return string
+
 if __name__ == "__main__":
     memory = MemoryManager()
-    print("Memory:", memory.memory)
+    print("Memory:", memory)
     """ 
     # resetting the memory to test the memory
     memory.reset_memory()

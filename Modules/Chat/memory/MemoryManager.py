@@ -102,9 +102,9 @@ class MemoryManager:
                 print(chunk.content, end="")
             else:
                 continue
+        full_message = self.brain.get_full()
         if config.DEBUG:
             print("\n\n--------------------//FULL TEXT//--------------------")
-            full_message = self.brain.get_full()
             print(full_message)
         return full_message
 

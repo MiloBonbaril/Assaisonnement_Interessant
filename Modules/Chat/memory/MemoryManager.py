@@ -17,6 +17,8 @@ class MemoryManager:
         else:
             self.memory = []
 
+        self.memo_id = 0
+
     def load(self):
         with open(self.path, "r") as file:
             print("Loading memory...")
@@ -90,6 +92,27 @@ class MemoryManager:
         self.add_message_to_memory(AIMessage(full_message))
         return full_message
 
+    def get_memory_id(self):
+        # check inside a 'data' folder how many files are there and return the number of files + 1
+        os.makedirs("data", exist_ok=True)
+        files = os.listdir("data")
+        return len(files) + 1
+
+    def soft_reset_memory(self):
+        # save the memory in a file inside 'data' folder, following the id and reset the memory
+        self.memo_id = self.get_memory_id()
+        with open(f"data/conv_{self.memo_id}.json", "w") as file:
+            save_data = []
+            for message in self.memory:
+                if isinstance(message, SystemMessage):
+                    save_data.append({"type": "SystemMessage", "content": message.content})
+                elif isinstance(message, HumanMessage):
+                    save_data.append({"type": "HumanMessage", "content": message.content})
+                elif isinstance(message, AIMessage):
+                    save_data.append({"type": "AIMessage", "content": message.content})
+            json.dump(save_data, file, indent=4)
+        self.reset_memory()
+
     def reset_memory(self):
         self.memory = []
         self.save()
@@ -113,7 +136,24 @@ class MemoryManager:
             SystemMessage("You are Lilly, you act like a young woman. Your goal now is to summarize the conversation you had with the user, just like you tell your future self what you did and what you tell to the user. You should keep the conversation short and to the point, while keeping as much as possible personnal information about yourself and the user. AND of course KEEP major events!"),
             HumanMessage("Can you summarize the conversation we had?"),
         ]
-        self.send_message_without_adding_in_memory(prompt, include_memory=False)
+        summary = self.send_message_without_adding_in_memory(prompt, include_memory=False)
+        # ask the user if the summary is good
+        print("--------------------//SUMMARY//--------------------")
+        print("Summary:", summary)
+        print("--------------------//SUMMARY//--------------------")
+        print("Is the summary good?")
+        user_response = input()
+        if user_response.lower() in ["yes", "y", "ok", "sure", "fine", "good"]:
+            print("Ok, I will reset the memory.")
+            self.soft_reset_memory()
+            messages = [
+                SystemMessage("The conversation was summarized by the AI and the user confirmed it was good. The following message is the summary:"),
+                AIMessage(summary),
+                SystemMessage("You can now act normal. You are Lilly, you act like a young woman. You will assist the user in their daily tasks, while keeping a conversation like a real human. Your answer should be short, just like a SMS.")
+            ]
+            self.add_message_to_memory(messages)
+        else:
+            print("Ok, I will keep the memory as it is.")
 
     def check_memory(self, force_summarize=False):
         if self.verify_memory_length() or force_summarize:

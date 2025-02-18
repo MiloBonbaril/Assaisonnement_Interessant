@@ -24,7 +24,7 @@ while True:
     current_date = datetime.now()
     system_message = SystemMessage(f"Today is {current_date.strftime('%d/%m/%Y')} and the time is {current_date.strftime('%H:%M:%S')}")
     # Send the system message
-    memory_manager.send_message_with_memory(system_message)
+    memory_manager.add_message_to_memory(system_message)
     # Add the user input to the memory
     final_message = memory_manager.send_message_with_memory(user_input)
     # Print the response

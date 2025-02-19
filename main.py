@@ -4,7 +4,7 @@ from datetime import datetime
 import gettext
 
 # Select the language you need
-lang = 'fr'  # For French, for example
+lang = 'en'  # For French, for example
 
 # Set up the translation. 'messages' is the domain name, and 'locale' is the directory
 translation = gettext.translation('prompts', localedir='locale', languages=[lang])

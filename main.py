@@ -4,14 +4,14 @@ from datetime import datetime
 import gettext
 
 # Select the language you need
-lang = 'fr'  # For Spanish, for example
+lang = 'fr'  # For French, for example
 
 # Set up the translation. 'messages' is the domain name, and 'locale' is the directory
 translation = gettext.translation('prompts', localedir='locale', languages=[lang])
 translation.install()
 _ = translation.gettext  # Alias for easier usage
 
-memory_manager = MemoryManager()
+memory_manager = MemoryManager(_)
 
 welcome_message = [
     SystemMessage(_("Lilly, you are now Online! Please welcome the user.")),

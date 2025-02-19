@@ -1,8 +1,13 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
 msgid "Lilly, you are now Online! Please welcome the user."
 msgstr "Lilly, tu es de nouveau en ligne! S'il te plaît, accueille l'utilisateur."
 
 msgid "Heyyy Lilly, welcome back!"
-msgstr "Salut Lilly!"
+msgstr "Salut Lilly! Bienvenue!"
 
 msgid "Today is {date} and the time is {time}"
 msgstr "Aujourd'hui, nous sommes le {date} et il est {time}"

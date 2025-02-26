@@ -11,7 +11,7 @@ class ChatBrain:
     def __init__(self):
         self.llm = ChatOllama(
             model = config.MODEL_NAME,
-            temperature = 0.6,
+            temperature = 0.7,
             top_k=35,
             top_p=0.92,
             repeat_penalty=1.1,

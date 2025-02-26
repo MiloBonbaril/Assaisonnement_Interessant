@@ -1,10 +1,11 @@
 from Modules.Chat.memory.MemoryManager import MemoryManager
+from Modules.Voice.Voice import OutputVoice
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from datetime import datetime
 import gettext
 
 # Select the language you need
-lang = 'en'  # For French, for example
+lang = 'fr'  # For French, for example
 
 # Set up the translation. 'messages' is the domain name, and 'locale' is the directory
 translation = gettext.translation('prompts', localedir='locale', languages=[lang])
@@ -12,13 +13,19 @@ translation.install()
 _ = translation.gettext  # Alias for easier usage
 
 memory_manager = MemoryManager(_)
+output_player = OutputVoice()
+
+current_date = datetime.now()
+system_message = SystemMessage(_("Today is {date} and the time is {time}").format(date=current_date.strftime("%d/%m/%Y"), time=current_date.strftime("%H:%M:%S")))
 
 welcome_message = [
+    system_message,
     SystemMessage(_("Lilly, you are now Online! Please welcome the user.")),
     HumanMessage(_("Heyyy Lilly, welcome back!"))
 ]
 
 final_message = memory_manager.send_message_without_adding_in_memory(welcome_message)
+output_player.speak(final_message)
 print("Lilly: " + final_message)
 
 # Set a loop to keep the program running
@@ -36,5 +43,7 @@ while True:
     memory_manager.add_message_to_memory(system_message)
     # Add the user input to the memory
     final_message = memory_manager.send_message_with_memory(user_input)
+    # Speak the final message
+    output_player.speak(final_message)
     # Print the response
     print("Lilly: " + final_message)

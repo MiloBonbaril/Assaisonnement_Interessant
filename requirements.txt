@@ -1,0 +1,4 @@
+langchain-core
+langchain-ollama
+edge_tts
+pyaudio

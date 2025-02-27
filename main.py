@@ -3,6 +3,12 @@ from Modules.Voice.Voice import OutputVoice
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from datetime import datetime
 import gettext
+import os
+
+# "compile" translation files
+if not os.path.exists('locale/fr/LC_MESSAGES/prompts.mo'):
+    import translation_file_compiler
+    translation_file_compiler.compile_translation_files()
 
 # Select the language you need
 lang = 'fr'  # For French, for example

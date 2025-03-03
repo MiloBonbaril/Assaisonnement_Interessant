@@ -70,4 +70,4 @@ class OutputVoice:
 # Exemple d'utilisation
 if __name__ == "__main__":
     tts_player = OutputVoice()
-    tts_player.speak("Bonjour, je suis un LLM qui vous parle. Comment puis-je vous aider aujourd'hui ?")
+    tts_player.speak("Bonne nuit aussi ! Au revoir !")

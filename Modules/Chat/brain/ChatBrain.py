@@ -29,6 +29,22 @@ class ChatBrain:
             self.full += chunk.content
             yield chunk
 
+    def get_response(self, messages):
+        """
+        Get a complete response from the LLM without streaming.
+        Useful for internal decision-making functions.
+
+        Args:
+            messages: List of message objects to send to the LLM
+
+        Returns:
+            String containing the complete response
+        """
+        if config.DEBUG:
+            print("ChatBrain: Getting non-streaming response")
+        response = self.llm.invoke(messages)
+        return response.content
+
     def get_full(self):
         return_message = self.full
         self.reset()

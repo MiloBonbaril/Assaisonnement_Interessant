@@ -26,3 +26,78 @@ msgstr "La conversation a été résumée par l'IA et l'utilisateur a confirmé 
 
 msgid "You can now act normal. You are Lilly, you act like a young woman. You will assist the user in their daily tasks, while keeping a conversation like a real human. Your answer should be short, just like a SMS."
 msgstr "Tu peux maintenant agir normalement. Tu es Lilly, tu agis comme une jeune femme. Tu aideras l'utilisateur dans ses tâches quotidiennes, tout en maintenant une conversation comme un vrai humain. Tes réponses doivent être courtes, comme un SMS."
+
+msgid "RagManager: Loading HuggingFaceEmbeddings"
+msgstr "RagManager: Chargement des HuggingFaceEmbeddings"
+
+msgid "RagManager: HuggingFaceEmbeddings loaded"
+msgstr "RagManager: HuggingFaceEmbeddings chargés"
+
+msgid "RagManager: Creating vector database"
+msgstr "RagManager: Création de la base de données vectorielle"
+
+msgid "RagManager: Vector database created"
+msgstr "RagManager: Base de données vectorielle créée"
+
+msgid "Determine if this query requires retrieving information from past conversations.\nReply with ONLY 'Yes' or 'No'.\nSay 'Yes' if the query explicitly or implicitly refers to past conversations or previously discussed information.\nSay 'No' if the query can be answered without reference to past conversations."
+msgstr "Détermine si cette requête nécessite de récupérer des informations des conversations passées.\nRéponds UNIQUEMENT par 'Oui' ou 'Non'.\nDis 'Oui' si la requête fait référence explicitement ou implicitement à des conversations passées ou des informations déjà discutées.\nDis 'Non' si la requête peut être répondue sans référence aux conversations passées."
+
+msgid "Query: {0}"
+msgstr "Requête: {0}"
+
+msgid "Evaluate each document's relevance to the query on a scale of 1-10.\nReturn ONLY a JSON array with the relevance scores: [score1, score2, ...]\nHigher scores mean more relevant."
+msgstr "Évalue la pertinence de chaque document par rapport à la requête sur une échelle de 1 à 10.\nRenvoie UNIQUEMENT un tableau JSON avec les scores de pertinence: [score1, score2, ...]\nDes scores plus élevés signifient plus pertinent."
+
+msgid "Query: {0}\n\n{1}"
+msgstr "Requête: {0}\n\n{1}"
+
+msgid "RagManager: Failed to parse LLM document relevance scores"
+msgstr "RagManager: Échec de l'analyse des scores de pertinence des documents LLM"
+
+msgid "You have access to previous conversation history that might be relevant to the current query.\nUse this information when appropriate to provide contextual and informed responses.\n\nPREVIOUS CONVERSATION CONTEXT:\n{0}\n\nWhen responding:\n1. Use the provided context when it's directly relevant to the query\n2. Don't explicitly mention you're using \"context\" or \"previous conversations\"\n3. Answer naturally as if you remember the conversation\n4. If the context isn't helpful, rely on your general knowledge"
+msgstr "Tu as accès à l'historique des conversations précédentes qui pourrait être pertinent pour la requête actuelle.\nUtilise ces informations lorsque c'est approprié pour fournir des réponses contextuelles et informées.\n\nCONTEXTE DES CONVERSATIONS PRÉCÉDENTES:\n{0}\n\nLorsque tu réponds:\n1. Utilise le contexte fourni lorsqu'il est directement pertinent pour la requête\n2. Ne mentionne pas explicitement que tu utilises un \"contexte\" ou des \"conversations précédentes\"\n3. Réponds naturellement comme si tu te souvenais de la conversation\n4. Si le contexte n'est pas utile, fie-toi à tes connaissances générales"
+
+msgid "RagManager: Processing query with RAG: {0}"
+msgstr "RagManager: Traitement de la requête avec RAG: {0}"
+
+msgid "RagManager: Query requires retrieval, fetching documents"
+msgstr "RagManager: La requête nécessite une récupération, recherche des documents"
+
+msgid "RagManager: Found {0} relevant documents"
+msgstr "RagManager: {0} documents pertinents trouvés"
+
+msgid "RagManager: No relevant documents found"
+msgstr "RagManager: Aucun document pertinent trouvé"
+
+msgid "RagManager: Query does not require retrieval"
+msgstr "RagManager: La requête ne nécessite pas de récupération"
+
+msgid "Is retrieval relevant? {0}"
+msgstr "La récupération est-elle pertinente? {0}"
+
+msgid "Retrieval performed: {0}"
+msgstr "Récupération effectuée: {0}"
+
+msgid "Documents found: {0}"
+msgstr "Documents trouvés: {0}"
+
+msgid "Generated RAG Prompt:"
+msgstr "Prompt RAG généré:"
+
+msgid "No RAG prompt generated."
+msgstr "Aucun prompt RAG généré."
+
+msgid "What did we talk about yesterday?"
+msgstr "De quoi avons-nous parlé hier?"
+
+msgid "What's the weather like today?"
+msgstr "Quel temps fait-il aujourd'hui?"
+
+msgid "Interactive RAG Testing Mode"
+msgstr "Mode de Test RAG Interactif"
+
+msgid "Type queries to test or 'exit' to quit"
+msgstr "Tapez des requêtes à tester ou 'exit' pour quitter"
+
+msgid "Enter a query: "
+msgstr "Entrez une requête: "

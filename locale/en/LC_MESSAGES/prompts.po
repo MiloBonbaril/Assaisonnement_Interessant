@@ -26,3 +26,78 @@ msgstr "The conversation was summarized by the AI and the user confirmed it was 
 
 msgid "You can now act normal. You are Lilly, you act like a young woman. You will assist the user in their daily tasks, while keeping a conversation like a real human. Your answer should be short, just like a SMS."
 msgstr "You can now act normal. You are Lilly, you act like a young woman. You will assist the user in their daily tasks, while keeping a conversation like a real human. Your answer should be short, just like a SMS."
+
+msgid "RagManager: Loading HuggingFaceEmbeddings"
+msgstr "RagManager: Loading HuggingFaceEmbeddings"
+
+msgid "RagManager: HuggingFaceEmbeddings loaded"
+msgstr "RagManager: HuggingFaceEmbeddings loaded"
+
+msgid "RagManager: Creating vector database"
+msgstr "RagManager: Creating vector database"
+
+msgid "RagManager: Vector database created"
+msgstr "RagManager: Vector database created"
+
+msgid "Determine if this query requires retrieving information from past conversations.\nReply with ONLY 'Yes' or 'No'.\nSay 'Yes' if the query explicitly or implicitly refers to past conversations or previously discussed information.\nSay 'No' if the query can be answered without reference to past conversations."
+msgstr "Determine if this query requires retrieving information from past conversations.\nReply with ONLY 'Yes' or 'No'.\nSay 'Yes' if the query explicitly or implicitly refers to past conversations or previously discussed information.\nSay 'No' if the query can be answered without reference to past conversations."
+
+msgid "Query: {0}"
+msgstr "Query: {0}"
+
+msgid "Evaluate each document's relevance to the query on a scale of 1-10.\nReturn ONLY a JSON array with the relevance scores: [score1, score2, ...]\nHigher scores mean more relevant."
+msgstr "Evaluate each document's relevance to the query on a scale of 1-10.\nReturn ONLY a JSON array with the relevance scores: [score1, score2, ...]\nHigher scores mean more relevant."
+
+msgid "Query: {0}\n\n{1}"
+msgstr "Query: {0}\n\n{1}"
+
+msgid "RagManager: Failed to parse LLM document relevance scores"
+msgstr "RagManager: Failed to parse LLM document relevance scores"
+
+msgid "You have access to previous conversation history that might be relevant to the current query.\nUse this information when appropriate to provide contextual and informed responses.\n\nPREVIOUS CONVERSATION CONTEXT:\n{0}\n\nWhen responding:\n1. Use the provided context when it's directly relevant to the query\n2. Don't explicitly mention you're using \"context\" or \"previous conversations\"\n3. Answer naturally as if you remember the conversation\n4. If the context isn't helpful, rely on your general knowledge"
+msgstr "You have access to previous conversation history that might be relevant to the current query.\nUse this information when appropriate to provide contextual and informed responses.\n\nPREVIOUS CONVERSATION CONTEXT:\n{0}\n\nWhen responding:\n1. Use the provided context when it's directly relevant to the query\n2. Don't explicitly mention you're using \"context\" or \"previous conversations\"\n3. Answer naturally as if you remember the conversation\n4. If the context isn't helpful, rely on your general knowledge"
+
+msgid "RagManager: Processing query with RAG: {0}"
+msgstr "RagManager: Processing query with RAG: {0}"
+
+msgid "RagManager: Query requires retrieval, fetching documents"
+msgstr "RagManager: Query requires retrieval, fetching documents"
+
+msgid "RagManager: Found {0} relevant documents"
+msgstr "RagManager: Found {0} relevant documents"
+
+msgid "RagManager: No relevant documents found"
+msgstr "RagManager: No relevant documents found"
+
+msgid "RagManager: Query does not require retrieval"
+msgstr "RagManager: Query does not require retrieval"
+
+msgid "Is retrieval relevant? {0}"
+msgstr "Is retrieval relevant? {0}"
+
+msgid "Retrieval performed: {0}"
+msgstr "Retrieval performed: {0}"
+
+msgid "Documents found: {0}"
+msgstr "Documents found: {0}"
+
+msgid "Generated RAG Prompt:"
+msgstr "Generated RAG Prompt:"
+
+msgid "No RAG prompt generated."
+msgstr "No RAG prompt generated."
+
+msgid "What did we talk about yesterday?"
+msgstr "What did we talk about yesterday?"
+
+msgid "What's the weather like today?"
+msgstr "What's the weather like today?"
+
+msgid "Interactive RAG Testing Mode"
+msgstr "Interactive RAG Testing Mode"
+
+msgid "Type queries to test or 'exit' to quit"
+msgstr "Type queries to test or 'exit' to quit"
+
+msgid "Enter a query: "
+msgstr "Enter a query: "

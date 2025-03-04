@@ -116,7 +116,10 @@ class RagManager:
         ]
         
         response = self.chat_brain.get_response(prompt)
-        return "yes" in response.lower()
+        if config.DEBUG:
+            print("RagManager: Retrieval relevance response:")
+            print(response)
+        return any(keyword in response.lower() for keyword in ["yes", "oui", 'si', 'yeah', 'yep', 'yup', 'ouai', 'ok', 'okay'])
 
     def evaluate_document_relevance(self, query, documents, k=3):
         """
@@ -146,6 +149,9 @@ class RagManager:
         try:
             # Get relevance scores from LLM
             response = self.chat_brain.get_response(evaluation_prompt)
+            if config.DEBUG:
+                print("RagManager: LLM document relevance scores:")
+                print(response)
             scores = json.loads(response)
             
             # Pair documents with scores and sort by relevance
@@ -239,11 +245,20 @@ class RagManager:
 
 if __name__ == "__main__":
     from Modules.Chat.brain.ChatBrain import ChatBrain
+
+    import gettext
+    # Select the language you need
+    lang = 'fr'  # For French, for example
+
+    # Set up the translation. 'messages' is the domain name, and 'locale' is the directory
+    translation = gettext.translation('prompts', localedir='locale', languages=[lang])
+    translation.install()
+    _ = translation.gettext  # Alias for easier usage
     
     # Test the RAG system
     print("Initializing ChatBrain and RagManager...")
     chat_brain = ChatBrain()
-    rag_manager = RagManager(chat_brain=chat_brain)
+    rag_manager = RagManager(chat_brain=chat_brain, translation=_)
     
     # First ensure we have documents in the vector store
     documents = rag_manager.conversation_memory_to_documents()

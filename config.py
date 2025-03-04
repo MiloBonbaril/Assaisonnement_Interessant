@@ -4,4 +4,4 @@ CONVERSATION_MEMORY_PATH = "./conversation_memory.json"
 # "llama3.1"
 MODEL_NAME = "llama3.1"
 MAX_TOKEN_LENGTH = 2048
-DEBUG = False
+DEBUG = True

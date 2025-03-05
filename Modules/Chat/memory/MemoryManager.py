@@ -3,6 +3,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../')))
 
 from Modules.Chat.brain.ChatBrain import ChatBrain
+from Modules.Chat.memory.RagManager import RagManager
 import config
 import json
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
@@ -23,6 +24,10 @@ class MemoryManager:
             self.memory = []
             self.init_memory()
         self.memo_id = 0
+
+        # Initialize RagManager with the same translation function
+        self.rag_manager = RagManager(chat_brain=self.brain, translation=self._)
+
 
     def init_memory(self):
         messages = [
@@ -91,17 +96,47 @@ class MemoryManager:
         with open(self.path, "w") as file:
             json.dump(save_data, file, indent=4)
 
+    def update_rag_vector_store(self):
+        """Update the RAG vector store with the current memory contents"""
+        if config.DEBUG:
+            print(self._("Updating RAG vector store with current memory..."))
+        documents = self.rag_manager.conversation_memory_to_documents()
+        if documents:
+            saved_docs = self.rag_manager.vector_store.get()['documents']
+            need_save_docs = []
+            for document in documents:
+                if document not in saved_docs:
+                    need_save_docs.append(document)
+            if need_save_docs:
+                self.rag_manager.retroactively_add_conversation(need_save_docs)
+                if config.DEBUG:
+                    print(self._("RAG vector store updated successfully."))
+
     def send_message_without_adding_in_memory(self, message=None, include_memory=True):
         messages = []
         if include_memory:
             for m in self.memory:
                 messages.append(m)
+
+        # Process with RAG if there's a user message
+        rag_prompt = None
         if message is not None:
+            if isinstance(message, HumanMessage):
+                # Process the query with RAG
+                rag_result = self.rag_manager.process_query_with_rag(message.content)
+                if rag_result["rag_prompt"]:
+                    rag_prompt = SystemMessage(content=rag_result["rag_prompt"])
+                    # Insert the RAG prompt before the user's message
+                    messages.append(rag_prompt)
+
+            # Add the current message(s)
             if isinstance(message, list):
                 for m in message:
                     messages.append(m)
             else:
                 messages.append(message)
+
+        # Send to the language model
         for chunk in self.brain.stream(messages):
             if config.DEBUG:
                 print(chunk.content, end="")
@@ -111,12 +146,14 @@ class MemoryManager:
         if config.DEBUG:
             print("\n\n--------------------//FULL TEXT//--------------------")
             print(full_message)
+            if rag_prompt:
+                print("RAG was used for this response.")
         return full_message
 
     def send_message_with_memory(self, message):
         memory_status = self.check_memory()
         if memory_status:
-            print("Memmory has been summarized. Please consider to take a look.")
+            print("Memory has been summarized. Please consider to take a look.")
             return
         self.add_message_to_memory(message)
         full_message = self.send_message_without_adding_in_memory()
@@ -178,6 +215,8 @@ class MemoryManager:
         user_response = input()
         if user_response.lower() in ["yes", "y", "ok", "sure", "fine", "good"]:
             print("Ok, I will reset the memory.")
+            # update the RAG vector store before resetting the memory
+            self.update_rag_vector_store()
             self.soft_reset_memory()
             messages = [
                 SystemMessage(self._("The conversation was summarized by the AI and the user confirmed it was good. The following message is the summary of the conversation.")),

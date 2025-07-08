@@ -8,12 +8,12 @@ setup(
     author="VA Team",
     packages=find_packages(),
     install_requires=[
-        "typer[all]==0.9.0",
-        "rich==13.7.0",
-        "sentence-transformers==2.2.2",
-        "faiss-cpu==1.7.4",
-        "numpy==1.24.3",
-        "requests==2.31.0",
+        "typer[all]>=0.9.0",
+        "rich>=13.7.0",
+        "sentence-transformers>=2.2.2",
+        "faiss-cpu>=1.7.4",
+        "numpy>=1.24.3",
+        "requests>=2.31.0",
     ],
     entry_points={
         "console_scripts": [

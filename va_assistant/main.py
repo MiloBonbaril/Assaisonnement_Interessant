@@ -29,7 +29,7 @@ CONFIG = {
     "personas_file": "personas.json",
     "memory_db": "memory.db",
     "vector_index": "memory_vectors.index",
-    "ollama_url": "http://localhost:11434",
+    "ollama_url": os.environ.get("OLLAMA_URL", "http://localhost:11434"),
     "timezone": "Europe/Paris"
 }
 
@@ -408,7 +408,7 @@ class OllamaClient:
     
     def __init__(self):
         self.base_url = CONFIG["ollama_url"]
-        self.model = "llama3.1:latest"  # Modèle par défaut
+        self.model = "llama3.2:1b"  # Modèle par défaut
     
     async def generate_response(self, messages: List[Dict], persona: Persona, 
                               context: Dict = None) -> str:
@@ -435,7 +435,7 @@ class OllamaClient:
                 result = response.json()
                 return result.get("message", {}).get("content", "Désolé, je n'ai pas pu traiter votre demande.")
             else:
-                return f"Erreur de communication avec Ollama: {response.status_code}"
+                return f"Erreur de communication avec Ollama: {response.status_code} ({self.base_url}/api/generate)"
                 
         except Exception as e:
             return f"Erreur lors de la génération: {str(e)}"

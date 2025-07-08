@@ -1,5 +1,4 @@
 # docker-compose.yml
-version: '3.8'
 
 services:
   ollama:
@@ -10,20 +9,35 @@ services:
       - ollama_data:/root/.ollama
     environment:
       - OLLAMA_ORIGINS=*
+      - OLLAMA_HOST=0.0.0.0:11434
     command: serve
+    networks:
+      - ollama-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434"]
+      interval: 5s
+      timeout: 2s
+      retries: 20
 
   va-assistant:
     build:
       context: .
       dockerfile: Dockerfile
     depends_on:
-      - ollama
+      ollama:
+        condition: service_started
     volumes:
       - ./data:/app/data
     environment:
       - OLLAMA_URL=http://ollama:11434
+    networks:
+      - ollama-net
     stdin_open: true
     tty: true
 
 volumes:
   ollama_data:
+
+networks:
+  ollama-net:
+    driver: bridge

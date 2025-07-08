@@ -26,4 +26,4 @@ RUN mkdir -p /app/data
 
 # Point d'entrée
 ENTRYPOINT ["va"]
-CMD ["--help"]
+CMD ["start"]

@@ -44,7 +44,7 @@ L'Assistant Virtuel Phase 1 implémente un système conversationnel modulaire av
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    VirtualAssistant                        │
+│                    VirtualAssistant                         │
 ├─────────────────────────────────────────────────────────────┤
 │ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────┐ │
 │ │   Persona   │ │   Memory    │ │    Tools    │ │  Time   │ │
@@ -53,7 +53,7 @@ L'Assistant Virtuel Phase 1 implémente un système conversationnel modulaire av
 ├─────────────────────────────────────────────────────────────┤
 │                   OllamaClient                              │
 ├─────────────────────────────────────────────────────────────┤
-│                      CLI Interface                         │
+│                      CLI Interface                          │
 └─────────────────────────────────────────────────────────────┘
 ```
 

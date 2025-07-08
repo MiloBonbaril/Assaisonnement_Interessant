@@ -27,7 +27,7 @@ services:
       ollama:
         condition: service_started
     volumes:
-      - ./data:/app/data
+      - va_data:/app/data
     environment:
       - OLLAMA_URL=http://ollama:11434
     networks:
@@ -37,6 +37,7 @@ services:
 
 volumes:
   ollama_data:
+  va_data:
 
 networks:
   ollama-net:

@@ -1,7 +1,0 @@
-langchain-core
-langchain-ollama
-edge_tts
-pyaudio
-polib
-tts
-# pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126

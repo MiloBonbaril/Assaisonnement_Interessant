@@ -1,0 +1,18 @@
+[
+    {
+        "role": "system",
+        "content": "test system message"
+    },
+    {
+        "role": "user",
+        "content": "test user message"
+    },
+    {
+        "role": "tool",
+        "content": "test tool message"
+    },
+    {
+        "role": "assistant",
+        "content": "test assistant message"
+    }
+]

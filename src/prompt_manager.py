@@ -1,4 +1,4 @@
-from persona import Persona
+from src.persona import Persona
 
 class PromptManager:
 

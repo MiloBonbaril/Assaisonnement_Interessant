@@ -14,7 +14,7 @@ def main():
     prompt_manager = PromptManager(persona, debug=args.debug)
     memory_manager = MemoryManager("./data/chats/memory.json", debug=args.debug)
     system_prompt = prompt_manager.get_system_prompt()
-    greeting_messages = [system_prompt, {"role": "system", "content": "The user has entered the chat. Greet them appropriately."}]
+    greeting_messages = memory_manager.get_memory() + [system_prompt, {"role": "system", "content": "The user has entered the chat. Greet them appropriately."}]
     response = ""
     for chunk in ollama_interface.stream_response(messages=greeting_messages, think=True):
         print(f"{chunk}", end='', flush=True)
@@ -27,8 +27,8 @@ def main():
             print("Exiting the chat.")
             break
 
+        messages = memory_manager.get_memory() + [system_prompt, {"role": "user", "content": user_input}]
         memory_manager.add_memory_entry({"role": "user", "content": user_input})
-        messages = [system_prompt, {"role": "user", "content": user_input}]
 
         response = ""
         print(f"Assistant: ", end='', flush=True)

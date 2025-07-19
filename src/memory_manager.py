@@ -71,6 +71,14 @@ class MemoryManager:
             print(f"[MemoryManager] Added memory entry: message={message}")
         self.save_memory()
 
+    def get_memory(self):
+        """
+        Get the current memory.
+        """
+        if not self.memory:
+            self.load_memory()
+        return self.memory
+
     # DANGER ZONE
     def clear_memory(self):
         """

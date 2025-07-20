@@ -23,6 +23,12 @@ class PromptManager:
             prompt_lines.append("Your guidelines are:")
             for g in persona.guidelines:
                 prompt_lines.append(f"- {g}")
+        # Add limitations if present
+        limitations = getattr(persona, "limitations", [])
+        if limitations:
+            prompt_lines.append("Your limitations are:")
+            for l in limitations:
+                prompt_lines.append(f"- {l}")
         if persona.greetings:
             prompt_lines.append(f"""Sample greetings: "{'", "'.join(persona.greetings)}\"""")
         system_prompt = "\n".join(prompt_lines)

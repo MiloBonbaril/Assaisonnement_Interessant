@@ -10,7 +10,12 @@ class MemoryManager:
         self.memory_file = memory_file
         self.debug = debug
         self.memory = []
+        self.is_new_memory = False
         self.create_memory_file()
+        if self.memory == []:
+            self.is_new_memory = True
+            if self.debug:
+                print(f"[MemoryManager] No existing memory found. Starting with new memory.")
 
     def load_memory(self):
         """

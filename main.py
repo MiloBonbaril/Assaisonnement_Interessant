@@ -14,11 +14,16 @@ def main():
     prompt_manager = PromptManager(persona, debug=args.debug)
     memory_manager = MemoryManager("./data/chats/memory.json", debug=args.debug)
     system_prompt = prompt_manager.get_system_prompt()
-    greeting_messages = memory_manager.get_memory() + [system_prompt, {"role": "system", "content": "The user has entered the chat. Greet them appropriately."}]
+    if memory_manager.is_new_memory:
+        greeting_messages = memory_manager.get_memory() + [system_prompt, {"role": "system", "content": f"It is the first time you meet the user. Greet them appropriately. You must introduce yourself as {persona.name}."}]
+    else:
+        greeting_messages = memory_manager.get_memory() + [system_prompt, {"role": "system", "content": "The user has entered the chat. Greet them appropriately."}]
     response = ""
     for chunk in ollama_interface.stream_response(messages=greeting_messages, think=True):
         print(f"{chunk}", end='', flush=True)
         response += chunk
+    if args.debug:
+        print("\n")
     memory_manager.add_memory_entry({"role": "assistant", "content": response})
     print('\n')
     while True:
@@ -35,7 +40,8 @@ def main():
         for chunk in ollama_interface.stream_response(messages=messages, think=True):
             print(f"{chunk}", end='', flush=True)
             response += chunk
-
+        if args.debug:
+            print("\n")
         memory_manager.add_memory_entry({"role": "assistant", "content": response})
         print('\n')
 

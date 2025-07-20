@@ -8,6 +8,7 @@ class Persona:
         self.greetings = []
         self.tone = ""
         self.guidelines = []
+        self.limitations = []
         self.load_persona(persona_file)
 
     def load_persona_file(self, persona_file):
@@ -35,12 +36,14 @@ class Persona:
         self.greetings = behavior.get("greeting", [])
         self.tone = behavior.get("tone", "")
         self.guidelines = behavior.get("guidelines", [])
+        self.limitations = behavior.get("limitations", [])
         if self.debug:
             print(f"Persona name: {self.name}")
             print(f"Mood tags: {self.mood_tags}")
             print(f"Greetings: {self.greetings}")
             print(f"Tone: {self.tone}")
             print(f"Guidelines: {self.guidelines}")
+            print(f"Limitations: {self.limitations}")
 
     def __str__(self):
         return f"Persona(name={self.name}, mood_tags={self.mood_tags}, greetings={self.greetings}, tone={self.tone}, guidelines={self.guidelines})"

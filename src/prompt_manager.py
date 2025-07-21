@@ -30,7 +30,8 @@ class PromptManager:
             for l in limitations:
                 prompt_lines.append(f"- {l}")
         if persona.greetings:
-            prompt_lines.append(f"""Sample greetings: "{'", "'.join(persona.greetings)}\"""")
+            joined = '", "'.join(persona.greetings)
+            prompt_lines.append(f'Sample greetings: "{joined}"')
         system_prompt = "\n".join(prompt_lines)
         if self.debug:
             print("[PromptManager] System prompt generated:")

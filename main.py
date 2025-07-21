@@ -12,7 +12,7 @@ def main():
     ollama_interface = OllamaInterface(model_name=args.llm_model, debug=args.debug)
     persona = Persona(args.persona, debug=args.debug)
     prompt_manager = PromptManager(persona, debug=args.debug)
-    memory_manager = MemoryManager("./data/chats/memory.json", debug=args.debug)
+    memory_manager = MemoryManager(args.memory_file, debug=args.debug)
     system_prompt = prompt_manager.get_system_prompt()
     if memory_manager.is_new_memory:
         greeting_messages = memory_manager.get_memory() + [system_prompt, {"role": "system", "content": f"It is the first time you meet the user. Greet them appropriately. You must introduce yourself as {persona.name}."}]

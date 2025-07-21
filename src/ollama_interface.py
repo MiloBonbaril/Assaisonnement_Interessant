@@ -4,12 +4,23 @@ class OllamaInterface:
     def __init__(self, model_name, debug=False):
         self.model_name = model_name
         self.debug = debug
+        self.attemps = 3
 
     def generate_response(self, messages=None, think=False):
         if self.debug:
             print(f"Generating response for prompt: {messages[-1]} using model: {self.model_name}")
 
-        response = ollama.chat(model=self.model_name, messages=messages, think=think)
+        for attempt in range(self.attemps):
+            try:
+                response = ollama.chat(model=self.model_name, messages=messages, think=think)
+                if self.debug:
+                    print(f"Response received: {response}")
+                break
+            except Exception as e:
+                if self.debug:
+                    print(f"Attempt {attempt + 1} failed with error: {e}")
+                if attempt == self.attemps - 1:
+                    raise e
 
         return response['message']['content']
 
@@ -20,6 +31,8 @@ class OllamaInterface:
         stream = ollama.chat(model=self.model_name, messages=messages, stream=True, think=think)
 
         for chunk in stream:
+            if self.debug and 'thinking' in chunk['message']:
+                yield chunk['message']['thinking']
             yield chunk['message']['content']
 
 

@@ -1,10 +1,13 @@
 
+
 import json
 import os
+import logging
 
 class Persona:
     def __init__ (self, persona_file, debug=False):
         self.debug = debug
+        self.logger = logging.getLogger("Persona")
         self.name = ""
         self.mood_tags = []
         self.greetings = []
@@ -51,12 +54,12 @@ class Persona:
         self.guidelines = behavior.get("guidelines", [])
         self.limitations = behavior.get("limitations", [])
         if self.debug:
-            print(f"Persona name: {self.name}")
-            print(f"Mood tags: {self.mood_tags}")
-            print(f"Greetings: {self.greetings}")
-            print(f"Tone: {self.tone}")
-            print(f"Guidelines: {self.guidelines}")
-            print(f"Limitations: {self.limitations}")
+            self.logger.debug(f"Persona name: {self.name}")
+            self.logger.debug(f"Mood tags: {self.mood_tags}")
+            self.logger.debug(f"Greetings: {self.greetings}")
+            self.logger.debug(f"Tone: {self.tone}")
+            self.logger.debug(f"Guidelines: {self.guidelines}")
+            self.logger.debug(f"Limitations: {self.limitations}")
 
     def __str__(self):
         return f"Persona(name={self.name}, mood_tags={self.mood_tags}, greetings={self.greetings}, tone={self.tone}, guidelines={self.guidelines})"

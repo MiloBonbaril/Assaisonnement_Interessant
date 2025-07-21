@@ -1,4 +1,6 @@
+
 import json
+import logging
 
 class MemoryManager:
     """
@@ -11,11 +13,12 @@ class MemoryManager:
         self.debug = debug
         self.memory = []
         self.is_new_memory = False
+        self.logger = logging.getLogger("MemoryManager")
         self.create_memory_file()
         if self.memory == []:
             self.is_new_memory = True
             if self.debug:
-                print(f"[MemoryManager] No existing memory found. Starting with new memory.")
+                self.logger.debug("No existing memory found. Starting with new memory.")
 
     def load_memory(self):
         """
@@ -25,14 +28,14 @@ class MemoryManager:
             with open(self.memory_file, 'r') as f:
                 self.memory = json.load(f)
             if self.debug:
-                print(f"[MemoryManager] Memory loaded from {self.memory_file}")
+                self.logger.debug(f"Memory loaded from {self.memory_file}")
         except FileNotFoundError:
             if self.debug:
-                print(f"[MemoryManager] Memory file {self.memory_file} not found. Starting with empty memory.")
+                self.logger.debug(f"Memory file {self.memory_file} not found. Starting with empty memory.")
             self.memory = []
         except json.JSONDecodeError as e:
             if self.debug:
-                print(f"[MemoryManager] Error decoding JSON from {self.memory_file}: {e}")
+                self.logger.debug(f"Error decoding JSON from {self.memory_file}: {e}")
             self.memory = []
 
     def save_memory(self):
@@ -42,7 +45,7 @@ class MemoryManager:
         with open(self.memory_file, 'w') as f:
             json.dump(self.memory, f, indent=4)
         if self.debug:
-            print(f"[MemoryManager] Memory saved to {self.memory_file}")
+            self.logger.debug(f"Memory saved to {self.memory_file}")
 
     def create_memory_file(self):
         """
@@ -58,10 +61,10 @@ class MemoryManager:
             with open(self.memory_file, 'x') as f:
                 json.dump([], f)  # Initialize with an empty JSON object
             if self.debug:
-                print(f"[MemoryManager] Memory file created: {self.memory_file}")
+                self.logger.debug(f"Memory file created: {self.memory_file}")
         except FileExistsError:
             if self.debug:
-                print(f"[MemoryManager] Memory file already exists: {self.memory_file}")
+                self.logger.debug(f"Memory file already exists: {self.memory_file}")
             self.load_memory()
 
     def add_memory_entry(self, message):
@@ -73,7 +76,7 @@ class MemoryManager:
         elif isinstance(message, dict):
             self.memory.append(message)
         if self.debug:
-            print(f"[MemoryManager] Added memory entry: message={message}")
+            self.logger.debug(f"Added memory entry: message={message}")
         self.save_memory()
 
     def get_memory(self):
@@ -92,12 +95,14 @@ class MemoryManager:
         """
         self.memory = []
         if self.debug:
-            print("[MemoryManager] Memory cleared.")
+            self.logger.debug("Memory cleared.")
         self.save_memory()
 
 
 if __name__ == "__main__":
     # Example usage
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
     memory_manager = MemoryManager(memory_file="./data/chats/test_memory.json", debug=True)
     memory_manager.clear_memory()
     memory_manager.add_memory_entry({"role": "system", "content": "test system message"})

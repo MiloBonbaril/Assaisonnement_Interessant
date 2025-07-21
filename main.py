@@ -3,10 +3,13 @@ from src.persona import Persona
 from src.ollama_interface import OllamaInterface
 from src.prompt_manager import PromptManager
 from src.memory_manager import MemoryManager
+import logging
 
 def main():
     args = get_args()
-    print(f"Arguments received: {args}")
+    logging.basicConfig(level=logging.DEBUG if args.debug else logging.INFO, filename='app.log', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    logger = logging.getLogger("main")
+    logger.info(f"Arguments received: {args}")
     if not args.llm_model:
         args.llm_model = "qwen3:4b"
     ollama_interface = OllamaInterface(model_name=args.llm_model, debug=args.debug)
@@ -23,7 +26,7 @@ def main():
         print(f"{chunk}", end='', flush=True)
         response += chunk
     if args.debug:
-        print("\n")
+        logger.debug("\n")
     memory_manager.add_memory_entry({"role": "assistant", "content": response})
     print('\n')
     while True:
@@ -41,7 +44,7 @@ def main():
             print(f"{chunk}", end='', flush=True)
             response += chunk
         if args.debug:
-            print("\n")
+            logger.debug("\n")
         memory_manager.add_memory_entry({"role": "assistant", "content": response})
         print('\n')
 

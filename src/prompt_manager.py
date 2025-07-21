@@ -1,10 +1,13 @@
+
 from src.persona import Persona
+import logging
 
 class PromptManager:
 
     def __init__(self, persona:Persona, debug=False):
         self.persona = persona
         self.debug = debug
+        self.logger = logging.getLogger("PromptManager")
 
     def get_system_prompt(self):
         """
@@ -34,12 +37,14 @@ class PromptManager:
             prompt_lines.append(f'Sample greetings: "{joined}"')
         system_prompt = "\n".join(prompt_lines)
         if self.debug:
-            print("[PromptManager] System prompt generated:")
-            print(system_prompt)
+            self.logger.debug("System prompt generated:")
+            self.logger.debug(system_prompt)
         return {"role": "system", "content": system_prompt}
 
 if __name__ == "__main__":
     # Example usage
+    import logging
+    logging.basicConfig(level=logging.DEBUG)
     persona = Persona("Lilly.json", debug=True)
     prompt_manager = PromptManager(persona, debug=True)
     system_prompt = prompt_manager.get_system_prompt()

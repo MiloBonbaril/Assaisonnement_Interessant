@@ -1,4 +1,6 @@
+
 import json
+import os
 
 class Persona:
     def __init__ (self, persona_file, debug=False):
@@ -11,7 +13,18 @@ class Persona:
         self.limitations = []
         self.load_persona(persona_file)
 
+
     def load_persona_file(self, persona_file):
+        # If absolute path, only try that path
+        if os.path.isabs(persona_file):
+            try:
+                with open(persona_file, 'r') as file:
+                    return json.load(file)
+            except FileNotFoundError:
+                raise FileNotFoundError(f"Persona file '{persona_file}' not found.")
+            except json.JSONDecodeError:
+                raise ValueError(f"Invalid JSON format in persona file '{persona_file}'.")
+        # Otherwise, try relative and fallback locations
         try:
             with open(persona_file, 'r') as file:
                 return json.load(file)

@@ -34,11 +34,7 @@ class OllamaInterface:
         stream = ollama.chat(model=self.model_name, messages=messages, stream=True, think=think)
 
         for chunk in stream:
-            if self.debug and 'thinking' in chunk['message']:
-                yield chunk['message']['thinking']
             yield chunk['message']['content']
-
-
 
 if __name__ == "__main__":
     # Example usage

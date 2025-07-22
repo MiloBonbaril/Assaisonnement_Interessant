@@ -36,9 +36,11 @@ def test_system_prompt_no_name():
     prompt = pm.get_system_prompt()
     assert "You are" not in prompt["content"]
 
-def test_debug_prints(capsys):
+def test_debug_prints(caplog):
     persona = DummyPersona(name="Lilly", mood_tags=["cheerful"], tone="friendly", guidelines=[], limitations=[], greetings=[])
     pm = PromptManager(persona, debug=True)
-    pm.get_system_prompt()
-    captured = capsys.readouterr()
-    assert "System prompt generated" in captured.out
+    import logging
+    logger_name = "PromptManager"
+    with caplog.at_level(logging.DEBUG, logger=logger_name):
+        pm.get_system_prompt()
+    assert any("System prompt generated" in message for message in caplog.text.splitlines())

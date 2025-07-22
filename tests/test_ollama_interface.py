@@ -29,19 +29,23 @@ def test_stream_response_yields_chunks(sample_messages):
         mock_chat.assert_called_once_with(model="test-model", messages=sample_messages, stream=True, think=False)
         assert chunks == ["part1", "part2"]
 
-def test_debug_prints_generate_response(sample_messages, capsys):
+def test_debug_prints_generate_response(sample_messages, caplog):
     with patch("src.ollama_interface.ollama.chat") as mock_chat:
         mock_chat.return_value = {"message": {"content": "foo"}}
         oi = OllamaInterface("test-model", debug=True)
-        oi.generate_response(messages=sample_messages)
-        captured = capsys.readouterr()
-        assert "Generating response for prompt" in captured.out
+        import logging
+        logger_name = "OllamaInterface"
+        with caplog.at_level(logging.DEBUG, logger=logger_name):
+            oi.generate_response(messages=sample_messages)
+        assert any("Generating response for prompt" in message for message in caplog.text.splitlines())
 
-def test_debug_prints_stream_response(sample_messages, capsys):
+def test_debug_prints_stream_response(sample_messages, caplog):
     fake_stream = [{"message": {"content": "foo"}}]
     with patch("src.ollama_interface.ollama.chat") as mock_chat:
         mock_chat.return_value = iter(fake_stream)
         oi = OllamaInterface("test-model", debug=True)
-        list(oi.stream_response(messages=sample_messages))
-        captured = capsys.readouterr()
-        assert "Streaming response for prompt" in captured.out
+        import logging
+        logger_name = "OllamaInterface"
+        with caplog.at_level(logging.DEBUG, logger=logger_name):
+            list(oi.stream_response(messages=sample_messages))
+        assert any("Streaming response for prompt" in message for message in caplog.text.splitlines())

@@ -1,2 +1,5 @@
 ollama==0.5.1
 pytest==8.4.1
+faiss-cpu==1.11.0.post1
+sentence-transformers==5.0.0
+numpy==2.2.5

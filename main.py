@@ -3,6 +3,7 @@ from src.persona import Persona
 from src.ollama_interface import OllamaInterface
 from src.prompt_manager import PromptManager
 from src.memory_manager import MemoryManager
+from src.tools import TimeTool
 import logging
 
 def main():
@@ -14,7 +15,8 @@ def main():
         args.llm_model = "qwen3:4b"
     ollama_interface = OllamaInterface(model_name=args.llm_model, debug=args.debug)
     persona = Persona(args.persona, debug=args.debug)
-    prompt_manager = PromptManager(persona, debug=args.debug)
+    tools = [TimeTool()]
+    prompt_manager = PromptManager(persona, tools, debug=args.debug)
     memory_manager = MemoryManager(args.memory_file, debug=args.debug)
     system_prompt = prompt_manager.get_system_prompt()
     if memory_manager.is_new_memory:

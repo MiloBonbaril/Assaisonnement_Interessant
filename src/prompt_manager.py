@@ -4,9 +4,10 @@ import logging
 
 class PromptManager:
 
-    def __init__(self, persona:Persona, debug=False):
+    def __init__(self, persona:Persona, tools=None, debug=False):
         self.persona = persona
         self.debug = debug
+        self.tools = tools if tools is not None else []
         self.logger = logging.getLogger("PromptManager")
 
     def get_system_prompt(self):
@@ -35,6 +36,11 @@ class PromptManager:
         if persona.greetings:
             joined = '", "'.join(persona.greetings)
             prompt_lines.append(f'Sample greetings: "{joined}"')
+        # Add tools if available
+        for tool in self.tools:
+            tool_prompt = tool.get_tool_prompt()
+            if tool_prompt:
+                prompt_lines.append(tool_prompt)
         system_prompt = "\n".join(prompt_lines)
         if self.debug:
             self.logger.debug("System prompt generated:")

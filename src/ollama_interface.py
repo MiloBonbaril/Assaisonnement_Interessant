@@ -3,10 +3,11 @@ import ollama
 import logging
 
 class OllamaInterface:
-    def __init__(self, model_name, debug=False):
+    def __init__(self, model_name, tools=None, debug=False):
         self.model_name = model_name
         self.debug = debug
         self.attemps = 3
+        self.tools = tools if tools is not None else []
         self.logger = logging.getLogger("OllamaInterface")
 
     def generate_response(self, messages=None, think=False):
@@ -30,6 +31,13 @@ class OllamaInterface:
     def stream_response(self, messages=None, think=False):
         if self.debug:
             self.logger.debug(f"Streaming response for prompt: {messages[-1]} using model: {self.model_name}")
+
+        ollama_tools = []
+        for tool in self.tools:
+            ollama_tools.append({
+                "name": tool.get_name(),
+                "description": tool.get_description()
+            })
 
         stream = ollama.chat(model=self.model_name, messages=messages, stream=True, think=think)
 

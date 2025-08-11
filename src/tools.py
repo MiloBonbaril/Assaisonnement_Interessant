@@ -4,7 +4,12 @@ from datetime import datetime
 class Tool(abc.ABC):
     @abc.abstractmethod
     def get_tool_prompt(self) -> str:
-        """Return a string describing the tool for the system prompt."""
+        """Return a string from the tool for the system prompt."""
+        pass
+
+    @abc.abstractmethod
+    def get_tool_memory(self) -> str:
+        """Return a string from the tool for the memory prompt."""
         pass
 
     @abc.abstractmethod
@@ -21,9 +26,17 @@ class Tool(abc.ABC):
         pass
 
 class TimeTool(Tool):
+    def __init__(self):
+        # Initialize the tool with the current date and time
+        self.now = datetime.now()
+
     def get_tool_prompt(self) -> str:
-        now = datetime.now()
-        return now.strftime("The current date and time is %Y-%m-%d %H:%M:%S.")
+        self.now = datetime.now()
+        return self.now.strftime("The current date and time is %Y-%m-%d %H:%M:%S.")
+
+    def get_tool_memory(self) -> str:
+        self.now = datetime.now()
+        return self.now.strftime("Current date and time: %Y-%m-%d %H:%M:%S.")
 
     def call_tool(self, args=None):
         return None

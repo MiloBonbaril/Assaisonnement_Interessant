@@ -17,7 +17,7 @@ def main():
     persona = Persona(args.persona, debug=args.debug)
     tools = [TimeTool()]
     prompt_manager = PromptManager(persona, tools, debug=args.debug)
-    memory_manager = MemoryManager(args.memory_file, debug=args.debug)
+    memory_manager = MemoryManager(args.memory_file, tools, debug=args.debug)
     system_prompt = prompt_manager.get_system_prompt()
     if memory_manager.is_new_memory:
         greeting_messages = memory_manager.get_memory() + [system_prompt, {"role": "system", "content": f"It is the first time you meet the user. Greet them appropriately. You must introduce yourself as {persona.name}."}]

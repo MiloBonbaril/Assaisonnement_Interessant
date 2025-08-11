@@ -11,9 +11,10 @@ class MemoryManager:
     It provides methods to load memory from a file and save memory to a file.
     """
 
-    def __init__(self, memory_file: str, debug=False):
+    def __init__(self, memory_file: str, tools=None, debug=False):
         self.memory_file = memory_file
         self.debug = debug
+        self.tools= tools if tools is not None else []
         self.memory = []
         self.is_new_memory = False
         self.logger = logging.getLogger("MemoryManager")
@@ -119,6 +120,11 @@ class MemoryManager:
         """
         Add a new entry to the memory. If token count exceeds 10000, embed user-assistant pairs and store in RAG DB.
         """
+        for tool in self.tools:
+            if hasattr(tool, 'get_tool_memory'):
+                tool_memory = tool.get_tool_memory()
+                if tool_memory:
+                    self.memory.append({"role": "system", "content": tool_memory})
         if isinstance(message, list):
             self.memory.extend(message)
         elif isinstance(message, dict):

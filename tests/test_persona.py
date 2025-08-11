@@ -47,3 +47,27 @@ def test_str_method(persona_json):
     s = str(p)
     assert "Persona(name=Lilly" in s
     assert "cheerful" in s
+
+
+def test_relative_path_lookup():
+    p = Persona("Lilly")
+    assert p.name == "Lilly"
+    assert p.greetings
+
+
+def test_missing_fields_defaults(tmp_path):
+    data = {"name": "Milo"}
+    file_path = tmp_path / "milo.json"
+    file_path.write_text(json.dumps(data))
+    p = Persona(str(file_path))
+    assert p.mood_tags == []
+    assert p.guidelines == []
+    assert p.limitations == []
+
+
+def test_debug_logs(persona_json, caplog):
+    file_path, _ = persona_json
+    import logging
+    with caplog.at_level(logging.DEBUG, logger="Persona"):
+        Persona(file_path, debug=True)
+    assert any("Persona name:" in msg for msg in caplog.text.splitlines())

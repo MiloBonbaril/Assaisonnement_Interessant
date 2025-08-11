@@ -44,3 +44,22 @@ def test_debug_prints(caplog):
     with caplog.at_level(logging.DEBUG, logger=logger_name):
         pm.get_system_prompt()
     assert any("System prompt generated" in message for message in caplog.text.splitlines())
+
+
+class DummyTool:
+    def get_tool_prompt(self):
+        return "tool prompt"
+
+
+def test_tool_prompt_included():
+    persona = DummyPersona(name="Lilly", mood_tags=["cheerful"], tone="", guidelines=[], limitations=[], greetings=[])
+    pm = PromptManager(persona, tools=[DummyTool()])
+    prompt = pm.get_system_prompt()["content"]
+    assert "tool prompt" in prompt
+
+
+def test_no_limitations_section_when_empty():
+    persona = DummyPersona(name="Lilly", mood_tags=["cheerful"], tone="friendly", guidelines=["Be kind"], limitations=[], greetings=[])
+    pm = PromptManager(persona)
+    prompt = pm.get_system_prompt()["content"]
+    assert "Your limitations are:" not in prompt

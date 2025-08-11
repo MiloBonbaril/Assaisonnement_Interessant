@@ -1,5 +1,12 @@
+import sys
+import types
 import pytest
 from unittest.mock import patch, MagicMock
+
+# Provide a minimal stub for the external ollama package
+fake_ollama = types.SimpleNamespace(chat=lambda *args, **kwargs: None)
+sys.modules.setdefault('ollama', fake_ollama)
+
 from src.ollama_interface import OllamaInterface
 
 @pytest.fixture
@@ -49,3 +56,27 @@ def test_debug_prints_stream_response(sample_messages, caplog):
         with caplog.at_level(logging.DEBUG, logger=logger_name):
             list(oi.stream_response(messages=sample_messages))
         assert any("Streaming response for prompt" in message for message in caplog.text.splitlines())
+
+
+def test_default_think_false(sample_messages):
+    with patch("src.ollama_interface.ollama.chat") as mock_chat:
+        mock_chat.return_value = {"message": {"content": "text"}}
+        oi = OllamaInterface("test-model")
+        oi.generate_response(messages=sample_messages)
+        mock_chat.assert_called_once_with(model="test-model", messages=sample_messages, think=False)
+
+
+def test_retry_on_failure(sample_messages):
+    side_effects = [Exception("boom"), Exception("boom"), {"message": {"content": "ok"}}]
+    with patch("src.ollama_interface.ollama.chat", side_effect=side_effects) as mock_chat:
+        oi = OllamaInterface("test-model")
+        result = oi.generate_response(messages=sample_messages)
+        assert result == "ok"
+        assert mock_chat.call_count == 3
+
+
+def test_raises_after_max_attempts(sample_messages):
+    with patch("src.ollama_interface.ollama.chat", side_effect=RuntimeError("fail")):
+        oi = OllamaInterface("test-model")
+        with pytest.raises(RuntimeError):
+            oi.generate_response(messages=sample_messages)

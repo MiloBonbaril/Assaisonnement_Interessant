@@ -40,3 +40,21 @@ def test_debug_flag():
 def test_llm_model_optional():
     args = run_with_args(["--persona", "Lilly", "--llm-model", "llama2"])
     assert args.llm_model == "llama2"
+
+
+def test_default_memory_file_formatting():
+    args = run_with_args(["--persona", "Lilly"])
+    assert args.memory_file == "./data/chats/Lilly.json"
+
+
+def test_custom_memory_file_is_formatted():
+    args = run_with_args(["--persona", "Lilly", "--memory_file", "/tmp/{persona}_log.json"])
+    assert args.memory_file == "/tmp/Lilly_log.json"
+
+
+def test_unknown_argument_causes_error():
+    old_argv = sys.argv.copy()
+    sys.argv = ["prog", "--persona", "Lilly", "--bogus"]
+    with pytest.raises(SystemExit):
+        get_args()
+    sys.argv = old_argv

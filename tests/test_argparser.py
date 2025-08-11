@@ -26,31 +26,48 @@ def test_minimal_args():
     assert args.persona == "Lilly"
     assert args.llm_model is None
     assert args.debug is False
+    assert args.audio is False
+    assert args.voice == "default"
 
 def test_all_args():
-    args = run_with_args(["--persona", "Lilly", "--llm-model", "qwen3:4b", "--debug"])
+    args = run_with_args([
+        "--persona", "Lilly",
+        "--llm-model", "qwen3:4b",
+        "--debug",
+        "--audio",
+        "--voice", "v1",
+    ])
     assert args.persona == "Lilly"
     assert args.llm_model == "qwen3:4b"
     assert args.debug is True
+    assert args.audio is True
+    assert args.voice == "v1"
 
 def test_debug_flag():
     args = run_with_args(["--persona", "Lilly", "--debug"])
     assert args.debug is True
 
+def test_audio_flag():
+    args = run_with_args(["--persona", "Lilly", "--audio"])
+    assert args.audio is True
+
 def test_llm_model_optional():
     args = run_with_args(["--persona", "Lilly", "--llm-model", "llama2"])
     assert args.llm_model == "llama2"
 
+def test_voice_option():
+    args = run_with_args(["--persona", "Lilly", "--voice", "alt"])
+    assert args.voice == "alt"
 
 def test_default_memory_file_formatting():
     args = run_with_args(["--persona", "Lilly"])
     assert args.memory_file == "./data/chats/Lilly.json"
 
-
 def test_custom_memory_file_is_formatted():
-    args = run_with_args(["--persona", "Lilly", "--memory_file", "/tmp/{persona}_log.json"])
+    args = run_with_args([
+        "--persona", "Lilly", "--memory_file", "/tmp/{persona}_log.json"
+    ])
     assert args.memory_file == "/tmp/Lilly_log.json"
-
 
 def test_unknown_argument_causes_error():
     old_argv = sys.argv.copy()

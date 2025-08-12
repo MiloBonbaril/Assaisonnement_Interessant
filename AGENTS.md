@@ -7,7 +7,7 @@ These instructions apply to the entire repository unless a more specific `AGENTS
 - The assistant can respond via the same channels and use tools such as home automation or other AI agents to assist with daily tasks.
 
 ## Development Guidelines
-- Use Python 3.10 or newer.
+- Use Python 3.12.
 - Follow PEP8 style conventions and keep lines under 88 characters.
 - Provide type hints and docstrings for all public functions and classes.
 - Keep code modular to ease adding new modalities or tools.

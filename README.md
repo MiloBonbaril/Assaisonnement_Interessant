@@ -9,7 +9,7 @@
 
 ## Project Overview
 
-<b>Assaisonnement Interessant</b> is a modular, privacy-first Python project (tested with Python 3.11+) for creating a 'virtual friend'—an interactive character designed for augmented reality (AR) environments (e.g., Meta Quest, Apple Vision Pro) and local-first operation. The character can engage in real-time conversations (voice/text), remember context, and (planned) interact with your home. All data and models run locally for maximum privacy and extensibility.
+<b>Assaisonnement Interessant</b> is a modular, privacy-first Python project (tested with Python 3.12.10) for creating a 'virtual friend'—an interactive character designed for augmented reality (AR) environments (e.g., Meta Quest, Apple Vision Pro) and local-first operation. The character can engage in real-time conversations (voice/text), remember context, and (planned) interact with your home. All data and models run locally for maximum privacy and extensibility.
 
 ---
 
@@ -125,7 +125,7 @@ Assaisonnement_Interessant/
    git clone https://github.com/MiloBonbaril/Assaisonnement_Interessant
    cd Assaisonnement_Interessant
    ```
-2. **Set up your Python environment (Python 3.11+ recommended):**
+2. **Set up your Python environment (Python 3.12+ recommended):**
    ```powershell
    python -m venv venv
    .\venv\Scripts\Activate
@@ -168,7 +168,7 @@ python main.py --persona Lilly.json --llm-model qwen3:4b --debug
 - **Ollama not found:** Ensure [Ollama](https://ollama.com/) is installed and running locally. Check your PATH and model availability.
 - **Persona file not found:** Double-check the filename and location in `data/persona/`. The loader supports fallback search paths and `.json` extension.
 - **Memory not saving/loading:** Ensure the `data/chats/` directory exists and is writable. The app will auto-create missing files if possible.
-- **Python version:** Use Python 3.11+ for best compatibility.
+- **Python version:** Use Python 3.12+ for best compatibility.
 - **Debugging:** Use the `--debug` flag for verbose output and troubleshooting.
 
 ---

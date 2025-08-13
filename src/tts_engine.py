@@ -62,6 +62,11 @@ def synthesize(text: str, voice: str) -> Path:
         raise ValueError(f"Unknown voice: {voice}")
     if TTS is None:
         raise RuntimeError("Coqui TTS library is not installed.")
+    # Clean the text string to avoid issues with special characters, remove emojis, etc.
+    try:
+        text = text.encode("ascii", "ignore").decode("ascii").strip()
+    except Exception as e:
+        raise ValueError(f"Error cleaning text: {e}")
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     timestamp = int(time.time() * 1000)
     file_path = LOG_DIR / f"{timestamp}_{uuid4().hex}.wav"

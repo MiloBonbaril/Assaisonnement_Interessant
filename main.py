@@ -85,7 +85,7 @@ def main() -> None:
             print(f"{chunk}", end="", flush=True)
             response += chunk
         if args.debug:
-            logger.debug("\n")
+            logger.debug("\nResoindse= %s\n", response)
         memory_manager.add_memory_entry({"role": "assistant", "content": response})
         if args.audio:
             audio_path = synthesize(response, args.voice)
